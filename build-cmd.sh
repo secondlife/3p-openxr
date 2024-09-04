@@ -65,7 +65,6 @@ pushd "$OPENXR_SOURCE_DIR"
                 ARCH_ARGS="-arch $arch"
                 cxx_opts="${TARGET_OPTS:-$ARCH_ARGS $LL_BUILD_RELEASE}"
                 cc_opts="$(remove_cxxstd $cxx_opts)"
-                ld_opts="$ARCH_ARGS -Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names"
 
                 mkdir -p "build_$arch"
                 pushd "build_$arch"
@@ -102,7 +101,8 @@ pushd "$OPENXR_SOURCE_DIR"
                     -DCMAKE_BUILD_TYPE="Release" \
                     -DCMAKE_C_FLAGS="$(remove_cxxstd $opts)" \
                     -DCMAKE_CXX_FLAGS="$opts" \
-                    -DCMAKE_INSTALL_PREFIX="$stage"
+                    -DCMAKE_INSTALL_PREFIX="$stage" \
+                    -DCMAKE_INSTALL_LIBDIR="$stage/lib/release"
 
                 cmake --build . --config Release
                 cmake --install . --config Release
